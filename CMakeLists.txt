@@ -1,0 +1,21 @@
+cmake_minimum_required(VERSION 3.24)
+
+set(CMAKE_CXX_COMPILER "cl") 
+
+set(CMAKE_C_COMPILER  "cl") 
+
+set(MVSC_COMPILE_FLAG "/Zi /MP")
+
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${MSVC_COMPILE_FLAGS}")
+
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/../bin)
+
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
+project(DEngine VERSION 0.01)
+
+file(GLOB_RECURSE SRC_FILE ${PROJECT_NAME}/src/**.cpp)
+
+add_executable(${PROJECT_NAME} WIN32 ${SRC_FILE})
+
+target_link_libraries(${PROJECT_NAME})
