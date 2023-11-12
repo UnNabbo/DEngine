@@ -38,13 +38,15 @@ void Win32ResizeDIBSection(Bitmap * Buffer, int32 Width, int32 Height){
         VirtualFree(Buffer->Memory, 0, MEM_RELEASE);
     }
 
-    const uint32 SizeMod = 1;
-    // Buffer->Height = Height;
-    // Buffer->Width = Width;
 
-    Buffer->Height = 128;
-    Buffer->Width = 128;
-    
+    const uint32 SizeMod = 1;
+#if 0
+    Buffer->Height = Height;
+    Buffer->Width = Width;
+#else
+    Buffer->Height = 256;
+    Buffer->Width = 256;
+#endif
     Buffer->Info.bmiHeader.biSize = sizeof(Buffer->Info.bmiHeader);
     Buffer->Info.bmiHeader.biPlanes = 1;
     Buffer->Info.bmiHeader.biBitCount = 32;
