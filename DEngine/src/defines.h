@@ -2,11 +2,14 @@
 
 #include "destring.h"
 
+#define INLINE __forceinline
+#define internal static
+#define global static
+
 #define KB(x) x * 1024
 #define MB(x) KB(x) * 1024
 #define GB(x) MB(x) * 1024
 
-#define global static
 
 typedef unsigned char byte;
 

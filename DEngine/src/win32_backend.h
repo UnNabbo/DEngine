@@ -21,7 +21,10 @@ struct Window{
 };
 
 
-void SetFrameBuffer(Window* Window, Bitmap* bitmap);
+enum { MOUSE_LEFT = 0b1, MOUSE_MIDDLE = 0b10, MOUSE_RIGHT = 0b100, MOUSE_X1 = 0b1000, MOUSE_X2 = 0b10000 };
+
+void SetFramebuffer(Window* Window, Bitmap* bitmap);
+Bitmap * GetFramebuffer();
 Window MakeWindow(const char * Title, int Width = CW_USEDEFAULT, int Height = CW_USEDEFAULT);
 void DestroyWindow(Window*);
 ivec2 GetWindowSize(HWND Window);
@@ -31,4 +34,3 @@ bool ShouldClose();
 void CloseWindow();
 void PoolEvents(); 
 void DisplayBuffer(Window* WindowHandle);
-void ClearBackground(int r = 0, int g = 0, int b = 0);

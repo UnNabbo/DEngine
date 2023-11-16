@@ -2,31 +2,16 @@
 #include <cmath>
 #include <winuser.h>
 
-
 struct {
 	ivec2 Position;
 	int8 Buttons;
 } Mouse;
-enum { MOUSE_LEFT = 0b1, MOUSE_MIDDLE = 0b10, MOUSE_RIGHT = 0b100, MOUSE_X1 = 0b1000, MOUSE_X2 = 0b10000 };
+
 
 global char Keyboard[255] = {0};
 global bool running = true;
 
 global Bitmap* Backbuffer;
-
-bool ShouldClose(){
-    return !running;
-}
-
-
-
-void ClearBackground(int r, int g, int b){
-    for(int y = 0; y < Backbuffer->Height; y++){
-        for(int x = 0; x < Backbuffer->Width; x++){
-            *(((uint32*)Backbuffer->Memory) + Backbuffer->Width * y + x ) = b | g << 8 | r << 16;
-        }
-    }
-}
 
 void Win32ResizeDIBSection(Bitmap * Buffer, int32 Width, int32 Height){
     
@@ -40,12 +25,12 @@ void Win32ResizeDIBSection(Bitmap * Buffer, int32 Width, int32 Height){
 
 
     const uint32 SizeMod = 1;
-#if 0
+#if 1
     Buffer->Height = Height;
     Buffer->Width = Width;
 #else
-    Buffer->Height = 256;
-    Buffer->Width = 256;
+    Buffer->Height = 128  ;
+    Buffer->Width = 128 ;
 #endif
     Buffer->Info.bmiHeader.biSize = sizeof(Buffer->Info.bmiHeader);
     Buffer->Info.bmiHeader.biPlanes = 1;
@@ -167,29 +152,19 @@ LRESULT CALLBACK WindowCallback(HWND Window, UINT Message, WPARAM WParam, LPARAM
     return Result;
 }
 
-ivec2 GetWindowSize(HWND Window) {
-    RECT ClientRect;
-    GetClientRect(Window, &ClientRect);
-    int Width = ClientRect.right - ClientRect.left; 
-    int Height = ClientRect.bottom - ClientRect.top;
-    return {Width, Height};
-}
-
-
-void SetFrameBuffer(Window* Window, Bitmap* Buffer) {
-    Backbuffer = Buffer;
-    ivec2 WindowSize = GetWindowSize(*Window);
-    Win32ResizeDIBSection(Backbuffer, WindowSize.Width, WindowSize.Height);   
-}
 
 Window MakeWindow(const char* Title, int Width, int Height){   
+    char str[64];
+    strcpy(str, Title);
+    strcat(str, " Class");
+
     WNDCLASSEXA WindowClass = {};
     WindowClass.cbSize = sizeof(WNDCLASSEXA);
     WindowClass.style = CS_OWNDC | CS_VREDRAW | CS_HREDRAW;
     WindowClass.lpfnWndProc = WindowCallback; //TODO 
     WindowClass.hInstance = GetModuleHandle(0);
     WindowClass.hIcon = 0;
-    WindowClass.lpszClassName = "Window Class";
+    WindowClass.lpszClassName = str;
     
     if(!RegisterClassExA(&WindowClass)){
         DebugBreak();
@@ -197,7 +172,7 @@ Window MakeWindow(const char* Title, int Width, int Height){
     
     Window Win = {};
     Win.Title = Title;
-    Win.NativeWindow = CreateWindowEx(0, WindowClass.lpszClassName, "DEngine", WS_TILEDWINDOW | WS_VISIBLE,
+    Win.NativeWindow = CreateWindowEx(0, WindowClass.lpszClassName, Title, WS_TILEDWINDOW | WS_VISIBLE,
                                 CW_USEDEFAULT, CW_USEDEFAULT, Width, Height, 0, 0, WindowClass.hInstance, 0);
     
     if(!Win.NativeWindow){
@@ -232,6 +207,30 @@ ivec2 GetMousePos(){
     return Mouse.Position;
 }
 
-void Quit(){
+
+bool ShouldClose(){
+    return !running;
+}
+
+void Exit(){
     running = false;
 }
+
+void SetFramebuffer(Window* Window, Bitmap* Buffer) {
+    Backbuffer = Buffer;
+    ivec2 WindowSize = GetWindowSize(*Window);
+    Win32ResizeDIBSection(Backbuffer, WindowSize.Width, WindowSize.Height);   
+}
+
+Bitmap* GetFramebuffer(){
+    return Backbuffer;
+}
+
+ivec2 GetWindowSize(HWND Window) {
+    RECT ClientRect;
+    GetClientRect(Window, &ClientRect);
+    int Width = ClientRect.right - ClientRect.left; 
+    int Height = ClientRect.bottom - ClientRect.top;
+    return {Width, Height};
+}
+
