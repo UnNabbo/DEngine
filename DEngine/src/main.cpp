@@ -10,7 +10,7 @@
 
 void GameUpdateAndRender(Bitmap* Buffer){
     ivec2 pos = GetMousePos();
-
+    #if 1
     {
     vec2 vertices[] = {
         {-0.5f, -0.5f},
@@ -87,6 +87,16 @@ void GameUpdateAndRender(Bitmap* Buffer){
     va.Size = sizeof(vertices);
     UnorderedDraw(va, {0xff,0xff,0xff});
     }
+#endif
+
+    DrawBezier({63,95}, {95, 95}, {95, 63});
+
+    DrawBezier({95,63}, {96, 32}, {63, 32});
+
+    DrawBezier({63,32}, {32, 32}, {32, 63});
+
+    DrawBezier({32,63}, {32, 95}, {63, 95});
+
 }
 
 
@@ -97,16 +107,21 @@ int CALLBACK WinMain(HINSTANCE hInst, HINSTANCE hInstPrev, PSTR cmdline, int32 c
     Window Window = MakeWindow("DEngine", 1024, 1024);
     
     SetFramebuffer(&Window, &Backbuffer);
-    
+        
+
+
     while(!ShouldClose()){
         PoolEvents();
+
         BeginRendering();
-        ClearBackground(31,32,34);
+        ClearBackground(0x21,0x22,0x24);
            
+
         GameUpdateAndRender(&Backbuffer);
         EndRendering();
-
         DisplayBuffer(&Window);
+
+
     }
 
     return 0;

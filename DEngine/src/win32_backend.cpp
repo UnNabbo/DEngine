@@ -1,5 +1,5 @@
 #include "win32_backend.h"
-#include <cmath>
+
 #include <winuser.h>
 
 struct {
@@ -25,12 +25,12 @@ void Win32ResizeDIBSection(Bitmap * Buffer, int32 Width, int32 Height){
 
 
     const uint32 SizeMod = 1;
-#if 1
+#if 0
     Buffer->Height = Height;
     Buffer->Width = Width;
 #else
-    Buffer->Height = 128  ;
-    Buffer->Width = 128 ;
+    Buffer->Height = 128  * SizeMod;
+    Buffer->Width = 128 * SizeMod;
 #endif
     Buffer->Info.bmiHeader.biSize = sizeof(Buffer->Info.bmiHeader);
     Buffer->Info.bmiHeader.biPlanes = 1;

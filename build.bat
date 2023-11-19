@@ -31,7 +31,7 @@ if errorlevel 1 (
 ) else (
     cd ..
     echo:
-    echo SUCCEFUL COMPILATION
+    echo SUCCESSFUL COMPILATION
     echo:
 
 

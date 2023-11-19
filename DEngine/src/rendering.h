@@ -16,3 +16,7 @@ void UnorderedDraw(VertexArray Va, vec3 color, uint32 Begin = 0);
 
 void BeginRendering();
 void EndRendering();
+
+
+void DrawBezier(ivec2 p0, ivec2 p1, ivec2 p2, vec3 Color = {0xff, 0, 0});
+void SetPixel(int32 x, int32 y, uint8 r = 0xff, uint8 g = 0x00, uint8 b = 0xff);
