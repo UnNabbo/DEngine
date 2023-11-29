@@ -2,6 +2,7 @@
 
 #include "defines.h"
 
+#include "memarena.h"
 #include "win32_backend.h"
 
 #include "dmath.h"
@@ -9,20 +10,14 @@
 #include "logger.h"
 
 global Bitmap * Framebuffer = 0;
-
-//INTERNAL FUNCTIONS
-//S
+global MemArena * RenderingMemory = 0; 
 
 void SetPixel(int32 x, int32 y, uint8 r , uint8 g, uint8 b){
-
-    if((x < Framebuffer->Width && x >= 0) && (y < Framebuffer->Height && y >= 0)){
+    //if((x < Framebuffer->Width && x >= 0) && (y < Framebuffer->Height && y >= 0)){
     *(((uint32*)Framebuffer->Memory) + Framebuffer->Width * y + x) = b | g << 8 | r << 16;
-    }
+    //}
 }
 
-// INLINE void SetPixel(int32 x, int32 y, uint8 r = 0xff, uint8 g = 0x00, uint8 b = 0xff){
-//     *(((uint32*)Framebuffer->Memory) + Framebuffer->Width * y + x) = b | g << 8 | r << 16;
-// }
 
 INLINE internal vec3 GetPixel(int32 x, int32 y){
     vec3 Color = {};
@@ -190,7 +185,7 @@ void DrawBezier(int x0, int y0, int x1, int y1, int x2, int y2, vec3 Color)
     PlotBezier(x0,y0, x1,y1, x2,y2, Color); /* remaining part */ 
 }
 
-void DrawBezier(ivec2 p0, ivec2 p1, ivec2 p2, vec3 Color){
+void DrawBezier(ivec2 p0, ivec2 p1, ivec2 p2, color3 Color){
     DrawBezier(p0.x, p0.y, p1.x, p1.y, p2.x, p2.y, Color);    
 }
 
@@ -283,6 +278,11 @@ void BeginRendering(){
 
 void EndRendering(){
     Framebuffer = 0;
+}
+
+
+void ClearBackground(color3 color){
+    ClearBackground(color.r, color.g, color.b);
 }
 
 void ClearBackground(int r, int g, int b){

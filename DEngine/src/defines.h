@@ -6,11 +6,13 @@
 #define internal static
 #define global static
 
+#define EXIT_IF_NULL(x) if(!x){ return; }
+
 #define KB(x) x * 1024
 #define MB(x) KB(x) * 1024
 #define GB(x) MB(x) * 1024
 
-typedef unsigned char byte;
+typedef unsigned char Byte;
 
 typedef char    int8;
 typedef int16_t int16;

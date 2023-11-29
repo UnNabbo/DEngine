@@ -13,6 +13,7 @@
 #undef min
 #define min(a,b) (a > b) ? b : a
 
+typedef vec3 color3; 
 
 template<typename T, typename... Args>
 constexpr decltype(auto) vmax(T& arg1,Args&... args){

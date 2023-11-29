@@ -15,7 +15,6 @@ union vec3;
 union ivec2;
 union ivec3;
 
-//TODO : MOVE OPERATORS IN CPP FILE 
 union vec2{
     struct
     {
